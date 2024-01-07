@@ -3,6 +3,10 @@
   margin-right: 150px;
   margin-left: 150px;
 }
+.grid {
+  display: grid;
+  justify-content: flex-end;
+}
 
 .features-head {
   /* Center align text */
@@ -17,6 +21,7 @@
 .features-head .title span {
   /* Color for the span */
   color: #3a86ff;
+  color: #3A86FF;
   /* Font family for the span */
   font-family: var(--heading-font);
 }
@@ -63,8 +68,8 @@ h3 {
 .owl-carousel-wrapper {
   /* Owl carousel wrapper */
   background-color: var(--light-background-color);
-  width: 75%;
-  padding: 30px;
+  width: 100%;
+  padding: 20px;
   border-radius: 25px;
   z-index: 10;
   transition: 1s ease-in;
