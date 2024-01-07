@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react' // Removed useCallback
+import React, { useRef, useState, useEffect } from 'react'
 import './Features.css'
 import stages from '../../lib/data/featureData'
 import Image from 'next/image'
@@ -8,6 +8,22 @@ function Features (): JSX.Element {
 	const cardsContainer = useRef<HTMLDivElement | null>(null)
 	const [cardWidth, setCardWidth] = useState(0)
 	const [currentStage, setCurrentStage] = useState('stage-1')
+	const [currentPosition, setCurrentPosition] = useState(0)
+
+	const handleArrowClick = (direction: 'left' | 'right'): void => {
+		const container = cardsContainer.current
+		if (container) {
+			const cardWidth = container.offsetWidth + 10 // Adjust 10 to match the margin-right
+			const newPosition =
+        direction === 'left' ? currentPosition - cardWidth : currentPosition + cardWidth
+
+			setCurrentPosition(newPosition)
+			container.scrollTo({
+				left: newPosition,
+				behavior: 'smooth'
+			})
+		}
+	}
 
 	// Handle clicks on stages for larger screens
 	const accordian = (id: string): void => {
@@ -57,16 +73,24 @@ function Features (): JSX.Element {
 	return (
 		<div className="features">
 			<div className="features-head">
-				<h2>Our <span>Features</span></h2>
-				<p className="des">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-					Explicabo at a dolor voluptatum.</p>
+				<h2>
+          Our <span>Features</span>
+				</h2>
+				<p className="des">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo at a dolor
+          voluptatum.
+				</p>
 			</div>
 			<div className="flex align-middle justify-end gap-2.5 mt-12 mx-0">
 				<div className="stages">
-					{stages.map(stage => (
-						<div key={stage.id} className={`stage ${stage.id === currentStage
-							? 'active-stage'
-							: ''}`} onClick={() => { accordian(stage.id) }}>
+					{stages.map((stage) => (
+						<div
+							key={stage.id}
+							className={`stage ${stage.id === currentStage ? 'active-stage' : ''}`}
+							onClick={() => {
+								accordian(stage.id)
+							}}
+						>
 							<h3>{stage.title}</h3>
 							<p>{stage.description}</p>
 						</div>
@@ -74,20 +98,28 @@ function Features (): JSX.Element {
 				</div>
 
 				<div className="owl-carousel-wrapper" ref={owlCarousel}>
-					{stages.map(stage => (
+					{stages.map((stage) => (
 						<React.Fragment key={stage.id}>
-							<div key={stage.id} className={'stage none'}
+							<div
+								key={stage.id}
+								className={'stage none'}
 								onClick={() => {
 									accordian(stage.id)
-								}}>
+								}}
+							>
 								<h1>{stage.title}</h1>
+
 							</div>
 
 							<div className="owl-carousel">
-								<div className="cards" style={{
-									transform: `translateX(${cardWidth}px`
-								}} ref={cardsContainer}>
-									{stage.cards.map(card => (
+								<div
+									className="cards"
+									style={{
+										transform: `translateX(${cardWidth}px)`
+									}}
+									ref={cardsContainer}
+								>
+									{stage.cards.map((card) => (
 										<div key={card.title} className="card">
 											<Image className="card-image" src={card.image} alt={card.title} />
 											<h3 className="card-title">{card.title}</h3>
@@ -98,6 +130,14 @@ function Features (): JSX.Element {
 							</div>
 						</React.Fragment>
 					))}
+					<div className="arrow-icons">
+						<div className="arrow-left" onClick={() => { handleArrowClick('left') }}>
+              &lt;
+						</div>
+						<div className="arrow-right" onClick={() => { handleArrowClick('right') }}>
+              &gt;
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
